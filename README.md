@@ -5,8 +5,8 @@ Navega al directorio del proyecto.
 
 2. Ejecuta el siguiente comando:
 ```bash
-cd Prueba_3_IDWM
 git clone https://github.com/KuajinaiSS/Prueba_3_IDWM.git
+cd Prueba_3_IDWM
 ```
     
 ```bash
