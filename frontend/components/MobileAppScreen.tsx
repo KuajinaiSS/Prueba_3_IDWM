@@ -1,5 +1,5 @@
 import { ActivityIndicator, Button, Card, Text, Modal, Portal, TextInput } from 'react-native-paper';
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import { Post } from '../models/Post';
@@ -8,9 +8,17 @@ import axios from "axios";
 
 const MobileAppScreen = () => {
     const [posts, setPosts] = useState<Post[]>([]);
+    const [comments, setComments] = useState<Post[]>([]);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    const [idDelete, setIdDelete] = useState<number>(0);
+
+    const showModalDeleting = () => setIsDeleting(true);
+    const hideModalDeleting = () => setIsDeleting(false);
 
 
-    const url = "http://localhost:3000/posts"; // donde se levanto el backend
+
+    const url = "http://localhost:3000/posts/"; // donde se levanto el backend
+    const url2 = "http://localhost:3000/comments"; // donde se levanto el backend
 
     useEffect(() => {
         handleGet();
@@ -18,7 +26,7 @@ const MobileAppScreen = () => {
 
 
     const handleGet = async () => {
-        axios.get(url+"/posts")
+        axios.get(url)
             .then((response) => {
                 setPosts(response.data);
                 console.log(response.data);
@@ -29,6 +37,10 @@ const MobileAppScreen = () => {
             .finally(() => {
                 console.log("Finalizo");
             });
+
+    }
+
+    const handleGet2 = async () => {
 
     }
 
@@ -43,7 +55,13 @@ const MobileAppScreen = () => {
             })
             .finally(() => {
                 console.log("Finalizo");
+                hideModalDeleting();
             });
+    }
+
+    const handleIsDeleting = (id: number) => {
+        setIsDeleting(true);
+        setIdDelete(id);
     }
 
 
@@ -61,13 +79,13 @@ const MobileAppScreen = () => {
                             <Card.Title title={post.title} titleVariant={"headlineSmall"} />
 
                             <Card.Content>
-                                <Text variant={"bodySmall"}>Descripcion: {post.author}</Text>
-                                <Text variant={"bodySmall"}>Precio: ${post.image}</Text>
+                                <Text variant={"bodySmall"}>Autor: {post.author}</Text>
                             </Card.Content>
 
+                            <Card.Cover source={{ uri: post.image }} style={styles.cardImage} /> {/* Añade la imagen aquí */}
                             <Card.Actions>
 
-                                <Button mode={"contained"} onPress={() => handleDelete(post.id)}>
+                                <Button mode={"contained"} onPress={() => handleIsDeleting(post.id)}>
                                     <Text variant={"bodySmall"}>Eliminar</Text>
                                 </Button>
 
@@ -78,7 +96,21 @@ const MobileAppScreen = () => {
                 })}
             </ScrollView>
 
+            <Portal>
+                <Modal visible={isDeleting} onDismiss={hideModalDeleting} contentContainerStyle={styles.containerStyle}>
+                    <Text variant={"displaySmall"}>¿Estas seguro que deseas eliminar?</Text>
+                    <Button style={styles.button} mode={"contained"} onPress={() => handleDelete(idDelete)}>
+                        <Text variant={"bodySmall"}>Eliminar</Text>
+                    </Button>
+
+                    <Button style={styles.button} mode={"contained"} onPress={hideModalDeleting}>
+                        <Text variant={"bodySmall"}>Cancelar</Text>
+                    </Button>
+                </Modal>
+            </Portal>
+
         </SafeAreaView>
+
     );
 }
 
@@ -141,6 +173,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 20,
         margin: 20,
+    },
+    cardImage: {
+        width: '100%',
+        height: 200,
+        resizeMode: 'contain',
+        borderRadius: 0,
     },
 });
 
