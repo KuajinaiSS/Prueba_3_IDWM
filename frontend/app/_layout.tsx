@@ -1,7 +1,7 @@
 import {SafeAreaProvider} from "react-native-safe-area-context";
 import {PaperProvider, MD3LightTheme as Theme, Appbar} from "react-native-paper";
 import {Slot} from "expo-router";
-import IndexScreen from "../components/IndexScreen";
+import MobileAppScreen from "../components/MobileAppScreen";
 
 const HomeLayout = () => {
     return (
@@ -9,8 +9,7 @@ const HomeLayout = () => {
         <PaperProvider theme={theme}>
             <SafeAreaProvider>
 
-                <IndexScreen/>
-                {/* <Slot/> */}
+                <MobileAppScreen/>
 
             </SafeAreaProvider>
         </PaperProvider>

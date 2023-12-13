@@ -1,7 +1,6 @@
-export interface Producto {
+export interface Post {
     id: number;
-    name: string;
-    price: number;
-    description: string;
+    title: string;
+    author: string;
     image: string;
 }

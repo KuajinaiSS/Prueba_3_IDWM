@@ -1,7 +1,7 @@
-import IndexScreen from "../components/IndexScreen";
+import MobileAppScreen from "../components/MobileAppScreen";
 
 const Index = () => {
     return (
-        <IndexScreen/>
+        <MobileAppScreen/>
     );
 }
